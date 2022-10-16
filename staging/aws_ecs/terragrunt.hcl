@@ -1,6 +1,6 @@
 locals {
   environment_config = read_terragrunt_config(find_in_parent_folders("environment_specific.hcl"))
-  service            = "vpc"
+  service            = "ecs"
   provider           = local.environment_config.locals.provider
   tag                = local.environment_config.locals.tag
   environment        = local.environment_config.locals.environment
@@ -10,11 +10,11 @@ locals {
 }
 
 
-#calls the specific module VPC from external repo
+#calls the specific module ECS in a external repo
 terraform {
-  source = "git::git@github.com:fabriciocarboni/geekcell-iac.git//modules/aws_vpc?ref=${local.tag}"
-  # source = "../../../geekcell-iac/modules/aws_vpc"
+  source = "git::git@github.com:fabriciocarboni/geekcell-iac.git//modules/aws_ecs?ref=${local.tag}"
 }
+
 
 # Indicate what region to deploy the resources into
 generate "provider" {
@@ -26,7 +26,6 @@ generate "provider" {
   }
   EOF
 }
-
 
 
 remote_state {
@@ -44,7 +43,21 @@ remote_state {
   }
 }
 
-# output "vpc_id" {
-#   description = "VPC ID"
-#   value       = aws_vpc.main.id
-# }
+dependency "vpc" {
+  config_path = "../aws_vpc"
+#   mock_outputs = { #just in case we need to plan without main infra (vpc) applied yet
+#     vpc_id = "123"
+#   }
+}
+
+dependency "alb" {
+  config_path = "../aws_alb"
+}
+
+# Receive these inputs from dependencies (VPC and ALB)
+inputs = {
+  aws_region       = "${local.region}"
+  vpc_id           = dependency.vpc.outputs.vpc_id
+  private_subnets  = dependency.vpc.outputs.private_subnets
+  alb_tg_arn       = dependency.alb.outputs.alb_tg_arn
+}

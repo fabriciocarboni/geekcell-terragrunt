@@ -1,6 +1,6 @@
 locals {
   environment_config = read_terragrunt_config(find_in_parent_folders("environment_specific.hcl"))
-  service            = "vpc"
+  service            = "alb"
   provider           = local.environment_config.locals.provider
   tag                = local.environment_config.locals.tag
   environment        = local.environment_config.locals.environment
@@ -12,8 +12,7 @@ locals {
 
 #calls the specific module VPC from external repo
 terraform {
-  source = "git::git@github.com:fabriciocarboni/geekcell-iac.git//modules/aws_vpc?ref=${local.tag}"
-  # source = "../../../geekcell-iac/modules/aws_vpc"
+  source = "git::git@github.com:fabriciocarboni/geekcell-iac.git//modules/aws_alb?ref=${local.tag}"
 }
 
 # Indicate what region to deploy the resources into
@@ -44,7 +43,17 @@ remote_state {
   }
 }
 
-# output "vpc_id" {
-#   description = "VPC ID"
-#   value       = aws_vpc.main.id
-# }
+dependency "vpc" {
+  config_path = "../aws_vpc"
+#   mock_outputs = {
+#     vpc_id = "123"
+#   }
+}
+
+
+# Receive these inputs from VPC module output
+inputs = {
+  vpc_id             = dependency.vpc.outputs.vpc_id
+  public_subnets     = dependency.vpc.outputs.public_subnets
+}
+
