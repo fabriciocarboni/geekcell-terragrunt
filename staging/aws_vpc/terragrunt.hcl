@@ -5,15 +5,15 @@ locals {
   tag                = local.environment_config.locals.tag
   environment        = local.environment_config.locals.environment
   region             = local.environment_config.locals.region
-  s3_bucket_name     = "${local.environment_config.locals.client}-terraform-state-${local.environment}-${local.service}"
+  s3_bucket_name     = "${local.environment_config.locals.client}-terraform-state-${local.environment}-${local.service}-123"
   dynamodb_table     = "${local.environment_config.locals.client}-${local.environment}-${local.service}-lock-table"
 }
 
 
 #calls the specific module VPC from external repo
 terraform {
-  source = "git::git@github.com:fabriciocarboni/geekcell-iac.git//modules/aws_vpc?ref=${local.tag}"
-  # source = "../../../geekcell-iac/modules/aws_vpc"
+  # source = "git::git@github.com:fabriciocarboni/geekcell-iac.git//modules//aws_vpc?ref=${local.tag}"
+  source = "../../modules//aws_vpc"
 }
 
 # Indicate what region to deploy the resources into
@@ -44,7 +44,3 @@ remote_state {
   }
 }
 
-# output "vpc_id" {
-#   description = "VPC ID"
-#   value       = aws_vpc.main.id
-# }

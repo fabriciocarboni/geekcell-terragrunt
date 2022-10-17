@@ -6,14 +6,15 @@ locals {
   tag                = local.environment_config.locals.tag
   environment        = local.environment_config.locals.environment
   region             = local.environment_config.locals.region
-  s3_bucket_name     = "${local.environment_config.locals.client}-terraform-state-${local.environment}-${local.service}"
+  s3_bucket_name     = "${local.environment_config.locals.client}-terraform-state-${local.environment}-${local.service}-234"
   dynamodb_table     = "${local.environment_config.locals.client}-${local.environment}-${local.service}-lock-table"
 }
 
 
 #calls the specific module ECR in a external repo
 terraform {
-  source = "git::git@github.com:fabriciocarboni/geekcell-iac.git//modules/aws_ecr?ref=${local.tag}"
+  # source = "git::git@github.com:fabriciocarboni/geekcell-iac.git//modules/aws_ecr?ref=${local.tag}"
+  source = "../../modules//aws_ecr"
 }
 
 
@@ -27,7 +28,6 @@ generate "provider" {
   }
   EOF
 }
-
 
 remote_state {
   backend = "s3"

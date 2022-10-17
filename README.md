@@ -37,20 +37,23 @@ export AWS_ACCESS_KEY_ID=""
 export AWS_SECRET_ACCESS_KEY=""
 ```
 
-## Steps
+## Steps (layer by layer)
+
+This way we are going to deploy layer by layer. TODO: Fix dependencies so we can deploy all at once with `terragrunt run-all apply` 
 
 1) Initialize Terragrunt
 ```
 cd geekcell-terragrunt/staging
 terragrunt init
 ```
-2) Execute plan
+2) Deploy VPC
+VPC infra need to be applied first because other modules depends on it. Only after VPC is applied the other modules will benefit from VPC outputs and be used as inputs in them.
 ```
-terragrunt run-all plan --terragrunt-non-interactive
+cd aws_vpc
+terragrunt apply
 ```
-For the first plan, Terragrunt will ask if it can create the buckets so we assume yes for all questions with `--terragrunt-non-interactive`.
 
-3) Apply
+4) Deploy ALB
 ```
-terragrunt run-all apply
-```
+cd ../aws_alb
+terragrunt apply

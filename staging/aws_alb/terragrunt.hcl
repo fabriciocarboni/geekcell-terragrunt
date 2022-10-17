@@ -5,14 +5,15 @@ locals {
   tag                = local.environment_config.locals.tag
   environment        = local.environment_config.locals.environment
   region             = local.environment_config.locals.region
-  s3_bucket_name     = "${local.environment_config.locals.client}-terraform-state-${local.environment}-${local.service}"
+  s3_bucket_name     = "${local.environment_config.locals.client}-terraform-state-${local.environment}-${local.service}-123"
   dynamodb_table     = "${local.environment_config.locals.client}-${local.environment}-${local.service}-lock-table"
 }
 
 
-#calls the specific module VPC from external repo
+#calls the specific module ALB from external repo
 terraform {
-  source = "git::git@github.com:fabriciocarboni/geekcell-iac.git//modules/aws_alb?ref=${local.tag}"
+#   source = "git@github.com:fabriciocarboni/geekcell-iac.git//modules/aws_alb?ref=${local.tag}"
+    source = "../../modules//aws_alb"
 }
 
 # Indicate what region to deploy the resources into
@@ -25,7 +26,6 @@ generate "provider" {
   }
   EOF
 }
-
 
 
 remote_state {
@@ -43,10 +43,15 @@ remote_state {
   }
 }
 
+# dependencies {
+#   paths = ["../aws_vpc"]
+# }
+
 dependency "vpc" {
   config_path = "../aws_vpc"
 #   mock_outputs = {
 #     vpc_id = "123"
+#     public_subnets = "mock-attribute"
 #   }
 }
 
