@@ -1,7 +1,6 @@
 # AWS automation - ECS Fargate Cluster using Terragrunt
 
-## Diagram
-diagram here
+![](https://i.ibb.co/G7fjjGR/Diagrams-Terragrunt.png)
 ## Requirements:
 
 Clone this repo:
@@ -10,7 +9,7 @@ git clone https://github.com/fabriciocarboni/geekcell-terragrunt
 cd geekcell-terragrunt
 ```
 
-Terraform version 1.3.2 ( https://releases.hashicorp.com/terraform/1.3.2/ )
+Terraform version 1.3.2 [https://releases.hashicorp.com/terraform/1.3.2/]( https://releases.hashicorp.com/terraform/1.3.2/ )
  
 ```
   wget https://releases.hashicorp.com/terraform/1.3.2/terraform_1.3.2_linux_amd64.zip
@@ -18,7 +17,7 @@ Terraform version 1.3.2 ( https://releases.hashicorp.com/terraform/1.3.2/ )
   sudo mv terraform /usr/local/bin/
   rm -fr terraform_1.3.2_linux_amd64.zip
 ```
-Terragrunt version 0.39.1 ( https://github.com/gruntwork-io/terragrunt/releases/tag/v0.39.1 )
+Terragrunt version 0.39.1 [https://github.com/gruntwork-io/terragrunt/releases/tag/v0.39.1](https://github.com/gruntwork-io/terragrunt/releases/tag/v0.39.1)
  
 ```
   wget https://github.com/gruntwork-io/terragrunt/releases/download/v0.39.1/terragrunt_linux_amd64
@@ -37,23 +36,52 @@ export AWS_ACCESS_KEY_ID=""
 export AWS_SECRET_ACCESS_KEY=""
 ```
 
-## Steps (layer by layer)
+## Deploy (layer by layer)
 
-This way we are going to deploy layer by layer. TODO: Fix dependencies so we can deploy all at once with `terragrunt run-all apply` 
+This way we are going to deploy layer by layer.
 
 1) Initialize Terragrunt
 ```
 cd geekcell-terragrunt/staging
 terragrunt init
 ```
-2) Deploy VPC
-VPC infra need to be applied first because other modules depends on it. Only after VPC is applied the other modules will benefit from VPC outputs and be used as inputs in them.
+2) Deploy Networking (VPC)
+* VPC infra need to be applied first because other modules depends on it. Only after VPC is applied the other modules will benefit from VPC outputs and be used as inputs in them.
 ```
 cd aws_vpc
+terragrunt validate
+terragrunt plan
 terragrunt apply
 ```
 
-4) Deploy ALB
+4) Deploy Application Load Balancer (ALB)
 ```
 cd ../aws_alb
+terragrunt validate
+terragrunt plan
 terragrunt apply
+```
+
+4) Deploy Elastic Container Registry (ECR)
+```
+cd ../aws_ecr
+terragrunt validate
+terragrunt plan
+terragrunt apply
+```
+
+4) Deploy Elastic Container Service - Fargate (ECS)
+```
+cd ../aws_ecs
+terragrunt validate
+terragrunt plan
+terragrunt apply
+```
+
+## Deploy the environment as a whole
+```
+cd staging
+terragrunt validate
+terragrunt run-all apply --terragrunt-non-interactive
+```
+We use `--terragrunt-non-interactive` because terraform will ask if it can create the backend in s3 in order to store the states files.
