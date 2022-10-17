@@ -5,7 +5,7 @@ locals {
   tag                = local.environment_config.locals.tag
   environment        = local.environment_config.locals.environment
   region             = local.environment_config.locals.region
-  s3_bucket_name     = "${local.environment_config.locals.client}-terraform-state-${local.environment}-${local.service}-123"
+  s3_bucket_name     = "${local.environment_config.locals.client}-terraform-state-${local.environment}-${local.service}"
   dynamodb_table     = "${local.environment_config.locals.client}-${local.environment}-${local.service}-lock-table"
 }
 

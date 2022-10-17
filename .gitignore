@@ -9,4 +9,5 @@ vendor
 *.out
 .terragrunt-cache
 .bundle
+.terraform.lock.hcl
 terragrunt
