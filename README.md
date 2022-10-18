@@ -1,10 +1,11 @@
 # AWS automation - ECS Fargate Cluster using Terragrunt
 
+## Files organization
+![](https://i.ibb.co/G7fjjGR/Diagrams-Terragrunt.png)
+
 ## Diagram stack
 ![](https://i.ibb.co/qC7vWTQ/VPC-diagram-Page-1.jpg)
 
-## Files organization
-![](https://i.ibb.co/G7fjjGR/Diagrams-Terragrunt.png)
 ## Requirements:
 
 Clone this repo:
