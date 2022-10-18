@@ -91,5 +91,3 @@ terragrunt run-all apply --terragrunt-non-interactive
 ```
 We use `--terragrunt-non-interactive` because terraform will ask if it can create the backend in s3 in order to store the states files.
 
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
