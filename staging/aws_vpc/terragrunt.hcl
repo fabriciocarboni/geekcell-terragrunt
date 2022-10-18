@@ -1,3 +1,8 @@
+/*
+ * terragrunt.hcl
+ * Handles VPC Terragrunt configuration
+ */
+
 locals {
   environment_config = read_terragrunt_config(find_in_parent_folders("environment_specific.hcl"))
   service            = "vpc"

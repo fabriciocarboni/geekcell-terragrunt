@@ -1,5 +1,5 @@
 /*
- * security_groups.tf
+ * alb_sg.tf
  * Creates security group for Application Load Balancer
  */
 

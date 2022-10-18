@@ -1,3 +1,8 @@
+/*
+ * terragrunt.hcl
+ * Handles ALB Terragrunt configuration
+ */
+
 locals {
   environment_config = read_terragrunt_config(find_in_parent_folders("environment_specific.hcl"))
   service            = "alb"
@@ -43,16 +48,9 @@ remote_state {
   }
 }
 
-# dependencies {
-#   paths = ["../aws_vpc"]
-# }
 
 dependency "vpc" {
   config_path = "../aws_vpc"
-#   mock_outputs = {
-#     vpc_id = "123"
-#     public_subnets = "mock-attribute"
-#   }
 }
 
 

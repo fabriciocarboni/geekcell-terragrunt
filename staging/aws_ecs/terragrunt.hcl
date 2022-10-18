@@ -1,3 +1,8 @@
+/*
+ * terragrunt.hcl
+ * Handles ECS Terragrunt configuration
+ */
+
 locals {
   environment_config = read_terragrunt_config(find_in_parent_folders("environment_specific.hcl"))
   service            = "ecs"
@@ -44,27 +49,12 @@ remote_state {
   }
 }
 
-# dependencies {
-#   paths = ["../aws_vpc", "../aws_alb", "../aws_ecr"]
-# }
-
 dependency "vpc" {
   config_path = "../aws_vpc"
-#   mock_outputs = { #just in case we need to terragrunt plan without main infra (vpc) applied yet
-#     vpc_id = "123"
-#   }
 }
-
 
 dependency "alb" {
   config_path = "../aws_alb"
-#   mock_outputs = {
-#     aws_region     = "mock atribute"
-#     vpc_id = "mock atributel"
-#     private_subnets = "mock atribute"
-#     private_subnets = "mock atribute"
-#     alb_tg_arn = "mock atribute"
-#   }
 }
 
 # Receive these inputs from dependencies (VPC and ALB)

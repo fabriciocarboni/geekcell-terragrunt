@@ -1,5 +1,5 @@
 /*
- * vpc.tf
+ * main.tf
  * Creates VPC and its related services
  */
 
@@ -156,7 +156,7 @@ resource "aws_eip" "nat_eip-b" {
   }
 }
 
-# NAT Gateway for public-a
+# NAT Gateway for public-b
 resource "aws_nat_gateway" "nat-gw-b" {
   allocation_id = aws_eip.nat_eip-b.id
   subnet_id     = aws_subnet.public-b.id

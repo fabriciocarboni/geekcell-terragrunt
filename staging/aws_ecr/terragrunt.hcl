@@ -1,3 +1,8 @@
+/*
+ * terragrunt.hcl
+ * Handles ECR Terragrunt configuration
+ */
+
 locals {
   environment_config = read_terragrunt_config(find_in_parent_folders("environment_specific.hcl"))
   service            = "ecr"
@@ -44,6 +49,7 @@ remote_state {
   }
 }
 
+# Input this value into variable in modules/aws_ecr/main.tf
 inputs = {
   repository_name = "${local.repository_name}"
 }

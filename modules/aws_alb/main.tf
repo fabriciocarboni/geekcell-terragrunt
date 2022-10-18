@@ -1,5 +1,5 @@
 /*
- * elb.tf
+ * main.tf
  * Creates Application Load Balancer
  */
 
@@ -11,7 +11,7 @@ resource "aws_lb" "application-lb" {
   ip_address_type    = "ipv4"
   security_groups    = [aws_security_group.lb-sg.id]
 #   subnets            = [aws_subnet.public-a.id, aws_subnet.public-b.id]
-  subnets            = "${var.public_subnets}"
+  subnets            = "${var.public_subnets}" # it comes from modules/aws_vpc/main.tf
 
   tags = {
     Name = "Application Load Balancer"
@@ -36,10 +36,9 @@ resource "aws_lb_target_group" "alb-tg" {
     unhealthy_threshold = 2
     matcher             = 200
   }
-
 }
 
-
+# ALB Listener
 resource "aws_lb_listener" "listener-http" {
   load_balancer_arn = aws_lb.application-lb.arn
   port              = "80"
@@ -50,8 +49,9 @@ resource "aws_lb_listener" "listener-http" {
   }
 }
 
+
 /*
-*Variables that receives values from outputs
+*Variables that receives values from outputs <- modules/aws_vpc
 */
 variable "vpc_id" {
   description = "VPC ID" 
@@ -63,6 +63,7 @@ variable "public_subnets" {
     type = list(string)
 }
 
+# Outputs
 output "ELB_DNS_NAME" {
   description = "The DNS name of the ELB"
   value       = aws_lb.application-lb.dns_name

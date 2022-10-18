@@ -18,4 +18,5 @@ output "REPOSITORY_URL" {
   value       = aws_ecr_repository.ecr_repo.repository_url
 }
 
+# it comes from aws_ecr/terragrunt.hcl inputs repository_name
 variable "repository_name" {}

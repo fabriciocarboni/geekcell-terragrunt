@@ -1,5 +1,5 @@
 /*
- * ecs_fargate.tf
+ * main.tf
  * Creates a Amazon Elastic Container Service - Fargate
  */
 
