@@ -1,5 +1,9 @@
 # AWS automation - ECS Fargate Cluster using Terragrunt
 
+## Diagram stack
+![](https://i.ibb.co/qC7vWTQ/VPC-diagram-Page-1.jpg)
+
+## Files organization
 ![](https://i.ibb.co/G7fjjGR/Diagrams-Terragrunt.png)
 ## Requirements:
 
@@ -85,3 +89,6 @@ terragrunt validate
 terragrunt run-all apply --terragrunt-non-interactive
 ```
 We use `--terragrunt-non-interactive` because terraform will ask if it can create the backend in s3 in order to store the states files.
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
