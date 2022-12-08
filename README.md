@@ -39,6 +39,7 @@ Copy your aws credentials in your terminal so AWSCLI can have access on it as en
 ```
 export AWS_ACCESS_KEY_ID=""
 export AWS_SECRET_ACCESS_KEY=""
+export AWS_DEFAULT_REGION=us-east-1
 ```
 
 ## Deploy (layer by layer)
